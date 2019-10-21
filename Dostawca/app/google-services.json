@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "388749957349",
+    "firebase_url": "https://dostawca-8b360.firebaseio.com",
+    "project_id": "dostawca-8b360",
+    "storage_bucket": "dostawca-8b360.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:388749957349:android:948f99d89c77a1f8dbdc0c",
+        "android_client_info": {
+          "package_name": "com.example.dostawca"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "388749957349-4kb77uctcoqacpc8g4kkdeup89p2mveb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMs2El0irE2AAy1vwGti639lVnbk7CjW4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "388749957349-4kb77uctcoqacpc8g4kkdeup89p2mveb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
