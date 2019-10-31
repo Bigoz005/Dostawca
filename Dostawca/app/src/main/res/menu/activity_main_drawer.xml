@@ -5,7 +5,7 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_home"
+            android:id="@+id/nav_map"
             android:icon="@drawable/ic_home_black"
             android:title="Map" />
         <item
@@ -21,7 +21,7 @@
             android:icon="@drawable/ic_message_black"
             android:title="List of Addresses" />
         <item
-            android:id="@+id/nav_inbox"
+            android:id="@+id/nav_history"
             android:icon="@drawable/ic_featured_play_list_black"
             android:title="History" />
         <item

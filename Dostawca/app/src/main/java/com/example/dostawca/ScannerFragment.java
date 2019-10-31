@@ -1,6 +1,5 @@
 package com.example.dostawca;
 
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,14 +7,9 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
+public class ScannerFragment extends Fragment {
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class InboxFragment extends Fragment {
-
-
-    public InboxFragment() {
+    public ScannerFragment() {
         // Required empty public constructor
     }
 
@@ -23,9 +17,8 @@ public class InboxFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ((MainActivity)getActivity()).setActionBarTitle("Inbox");
+        ((MainActivity)getActivity()).setActionBarTitle("Scanner");
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_inbox, container, false);
+        return inflater.inflate(R.layout.fragment_scanner, container, false);
     }
-
 }

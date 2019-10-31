@@ -63,10 +63,10 @@ public class MainActivity extends AppCompatActivity
 
         //default fragment for home
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.flMain,new HomeFragment());
+        ft.replace(R.id.flMain,new MapFragment());
         ft.commit();
 
-        navigationView.setCheckedItem(R.id.nav_home);
+        navigationView.setCheckedItem(R.id.nav_map);
         navigationView.getMenu().getItem(1).setActionView(R.layout.menu_image);
     }
 
@@ -112,13 +112,25 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
+        if (id == R.id.nav_map) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.flMain,new HomeFragment());
+            ft.replace(R.id.flMain,new MapFragment());
             ft.commit();
-        } else if (id == R.id.nav_inbox) {
+        }else if (id == R.id.scanner) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.flMain,new InboxFragment());
+            ft.replace(R.id.flMain,new ScannerFragment());
+            ft.commit();
+        }else if (id == R.id.qr_scanner) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.flMain,new QRScannerFragment());
+            ft.commit();
+        }else if (id == R.id.addresses) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.flMain,new ListOfAddressesFragment());
+            ft.commit();
+        } else if (id == R.id.nav_history) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.flMain,new HistoryFragment());
             ft.commit();
         } else if (id == R.id.nav_setting) {
             Intent i = new Intent(MainActivity.this,SettingActivity.class);
