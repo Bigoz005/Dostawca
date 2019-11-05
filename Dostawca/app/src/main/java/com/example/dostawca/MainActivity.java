@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity
 
         //default fragment for home
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.flMain,new MapFragment());
+        ft.replace(R.id.flMain,new MapFragments());
         ft.commit();
 
         navigationView.setCheckedItem(R.id.nav_map);
@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_map) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.flMain,new MapFragment());
+            ft.replace(R.id.flMain,new MapFragments());
             ft.commit();
         }else if (id == R.id.scanner) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
