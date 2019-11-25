@@ -59,6 +59,7 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
 
     private static final long TIME_INTERVAL_GET_LOCATION = 1000 * 5; // 1 Minute
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 5000;
+    private View rootView;
 
     private View rootView;
 
@@ -77,12 +78,9 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
             ((ViewGroup) rootView.getParent()).removeView(rootView);
         }
 
-
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
-
         mapFragment.getMapAsync(this);
-
         TedPermission.with(getActivity())
                 .setPermissionListener(permissionlistener)
                 .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
@@ -103,6 +101,7 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
     public void onResume() {
         super.onResume();
     }
+
 
     @Override
     public void onPause() {
