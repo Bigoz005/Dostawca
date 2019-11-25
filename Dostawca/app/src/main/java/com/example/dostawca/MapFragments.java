@@ -60,13 +60,22 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
     private static final long TIME_INTERVAL_GET_LOCATION = 1000 * 5; // 1 Minute
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 5000;
 
+    private View rootView;
+
     public MapFragments() {
         // Required empty public constructor
     }
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_home, null);
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
+
+        if (rootView == null) {
+            ((MainActivity)getActivity()).setActionBarTitle("Map");
+            rootView = inflater.inflate(R.layout.fragment_home,container,false);
+
+        } else {
+            ((ViewGroup) rootView.getParent()).removeView(rootView);
+        }
 
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
