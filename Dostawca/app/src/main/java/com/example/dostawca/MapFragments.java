@@ -3,6 +3,7 @@ package com.example.dostawca;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -38,17 +39,24 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.Dot;
+import com.google.android.gms.maps.model.Gap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PatternItem;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MapFragments extends Fragment implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        LocationListener, OnMapReadyCallback {
+        LocationListener, OnMapReadyCallback, TaskLoadedCallback, GoogleMap.OnPolylineClickListener {
 
     private GoogleMap mMap;
 
@@ -61,22 +69,48 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 5000;
     private View rootView;
 
-    private View rootView;
+    //    private MarkerOptions place1 = new MarkerOptions().position(new LatLng(27.658143, 85.3199503)).title("Location 1");
+//    private MarkerOptions place2 = new MarkerOptions().position(new LatLng(27.667491, 85.3208583)).title("Location 2");
+    Polyline currentPolyline;
+
 
     public MapFragments() {
         // Required empty public constructor
     }
+
+    private static final PatternItem DOT = new Dot();
+    private static final PatternItem GAP = new Gap(5);
+    //
+// Create a stroke pattern of a gap followed by a dot.
+    private static final List<PatternItem> PATTERN_POLYLINE_DOTTED = Arrays.asList(GAP, DOT);
+
+    @Override
+    public void onPolylineClick(Polyline polyline) {
+        // Flip from solid stroke to dotted stroke pattern.
+        if ((polyline.getPattern() == null) || (!polyline.getPattern().contains(DOT))) {
+            polyline.setPattern(PATTERN_POLYLINE_DOTTED);
+        } else {
+            // The default pattern is a solid stroke.
+            polyline.setPattern(null);
+        }
+
+        Toast.makeText(this.getContext(), "Route type" + polyline.getTag().toString(), Toast.LENGTH_SHORT).show();
+    }
+
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
 
         if (rootView == null) {
-            ((MainActivity)getActivity()).setActionBarTitle("Map");
-            rootView = inflater.inflate(R.layout.fragment_home,container,false);
+            ((MainActivity) getActivity()).setActionBarTitle("Map");
+            rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
         } else {
             ((ViewGroup) rootView.getParent()).removeView(rootView);
         }
+
+//        String url = getUrl(place1.getPosition(), place2.getPosition(), "driving");
+//        new FetchURL(getContext()).execute(url, "driving");
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
@@ -96,6 +130,28 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
         return rootView;
     }
 
+    private String getUrl(LatLng origin, LatLng dest, String directionMode) {
+        // Origin of route
+        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
+        // Destination of route
+        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
+        // Mode
+        String mode = "mode=" + directionMode;
+        // Building the parameters to the web service
+        String parameters = str_origin + "&" + str_dest + "&" + mode;
+        // Output format
+        String output = "json";
+        // Building the url to the web service
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=" + getString(R.string.google_maps_key);
+        return url;
+    }
+
+    @Override
+    public void onTaskDone(Object... values) {
+        if (currentPolyline != null)
+            currentPolyline.remove();
+        currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
+    }
 
     @Override
     public void onResume() {
@@ -163,13 +219,34 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
 
                     LatLng point = new LatLng(locationData.getLatitude(), locationData.getLongitude());
 
-                    mMap.clear();
+                    //mMap.clear();
 
                     Marker marker = mMap.addMarker(new MarkerOptions().position(point).title("Your Current Location"));
                     marker.showInfoWindow();
 
-                    CameraPosition cameraPosition = new CameraPosition.Builder().target(point).zoom(16).build();
+                    CameraPosition cameraPosition = new CameraPosition.Builder().target(point).zoom(15).build();
                     mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+
+                    LatLng point1 = new LatLng(51.736630, 19.449100);
+                    LatLng point2 = new LatLng(52.736630, 20.449100);
+                    LatLng point3 = new LatLng(51.736630, 18.59100);
+                    LatLng point4 = new LatLng(51.0, 19.0);
+                    LatLng point5 = new LatLng(52.0, 18.5);
+
+                    Polyline polyline1 = mMap.addPolyline(new PolylineOptions()
+                            .clickable(true)
+                            .add(
+                                    point1, point2, point3, point4, point5
+//                                    ,new LatLng(52.555, 19.0)
+                            ));
+                    polyline1.setTag("Route 1");
+                    onPolylineClick(polyline1);
+                    Marker marker1 = mMap.addMarker(new MarkerOptions().position(point1).title("1"));
+                    Marker marker2 = mMap.addMarker(new MarkerOptions().position(point2).title("2"));
+                    Marker marker3 = mMap.addMarker(new MarkerOptions().position(point3).title("3"));
+                    Marker marker4 = mMap.addMarker(new MarkerOptions().position(point4).title("4"));
+                    Marker marker5 = mMap.addMarker(new MarkerOptions().position(point5).title("5"));
 
                 }
 
@@ -256,13 +333,28 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
         mMap.getUiSettings().setZoomControlsEnabled(false);
         mMap.setBuildingsEnabled(false);
         mMap.getUiSettings().setCompassEnabled(true);
-        //mMap.getUiSettings().setAllGesturesEnabled(false);
+//        mMap.getUiSettings().setAllGesturesEnabled(false);
         mMap.getUiSettings().setCompassEnabled(true);
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mMap.setIndoorEnabled(false);
         mMap.getUiSettings().setRotateGesturesEnabled(true);
 
+//        Polyline polyline1 = mMap.addPolyline(new PolylineOptions()
+//                .clickable(true)
+//                .add(
+//                        new LatLng(51.736630, 19.449100),
+//                        new LatLng(52.736630, 20.449100),
+//                        new LatLng(51.736630, 18.59100),
+//                        new LatLng(51.0, 19.0),
+//                        new LatLng(52.0, 19.5)));
+//        polyline1.setTag("A");
+//
+//        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(51.684, 18.903), 4));
+        mMap.setOnPolylineClickListener(this);
 
+//        Log.d("mylog", "Added Markers");
+//        mMap.addMarker(place1);
+//        mMap.addMarker(place2);
 
     }
 }
