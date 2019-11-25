@@ -67,9 +67,9 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-        ((MainActivity)getActivity()).setActionBarTitle("Map");
 
         if (rootView == null) {
+            ((MainActivity)getActivity()).setActionBarTitle("Map");
             rootView = inflater.inflate(R.layout.fragment_home,container,false);
 
         } else {
