@@ -148,8 +148,8 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 locationData = locationResult.getLastLocation();
-                Toast.makeText(getActivity(), "Latitude: " + locationData.getLatitude() + ", Longitude: " + locationData.getLongitude(), Toast.LENGTH_SHORT).show();
-                Log.w("==>UpdateLocation<==", "" + String.format("%.6f", locationData.getLatitude()) + "," + String.format("%.6f", locationData.getLongitude()));
+               // Toast.makeText(getActivity(), "Latitude: " + locationData.getLatitude() + ", Longitude: " + locationData.getLongitude(), Toast.LENGTH_SHORT).show();
+              //  Log.w("==>UpdateLocation<==", "" + String.format("%.6f", locationData.getLatitude()) + "," + String.format("%.6f", locationData.getLongitude()));
 
                 if (locationData != null) {
 
@@ -233,6 +233,7 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
 
         });
     }
+
 
     @Override
     public void onLocationChanged(Location location) {

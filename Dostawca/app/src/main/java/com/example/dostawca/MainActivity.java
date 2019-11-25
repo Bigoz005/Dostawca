@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.Menu;
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
-
+    private ExampleAsyncTask asyncTask;
     private static final long MIN_TIME = 10000;
     
     @Override
@@ -81,7 +82,43 @@ public class MainActivity extends AppCompatActivity
 
         navigationView.setCheckedItem(R.id.nav_map);
 
+        // START AsyncTask
+        asyncTask = new ExampleAsyncTask();
+        asyncTask.setListener(new ExampleAsyncTask.ExampleAsyncTaskListener() {
+            @Override
+            public void onExampleAsyncTaskFinished(Integer value) {
+                // update UI in Activity here
+            }
+        });
+        asyncTask.execute();
+
     }
+    static class ExampleAsyncTask extends AsyncTask<Void, Void, Integer> {
+        private ExampleAsyncTaskListener listener;
+
+        @Override
+        protected Integer doInBackground(Void... voids) {
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Integer value) {
+            super.onPostExecute(value);
+            if (listener != null) {
+                listener.onExampleAsyncTaskFinished(value);
+            }
+        }
+
+        public void setListener(ExampleAsyncTaskListener listener) {
+            this.listener = listener;
+        }
+
+        public interface ExampleAsyncTaskListener {
+            void onExampleAsyncTaskFinished(Integer value);
+        }
+    }
+
 
 
     public void setActionBarTitle(String title) {
