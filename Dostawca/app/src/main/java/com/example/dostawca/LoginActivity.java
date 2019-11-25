@@ -2,6 +2,7 @@ package com.example.dostawca;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView userRegistration;
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
+    boolean logged;
 
     RelativeLayout rellay1, rellay2;
 
@@ -43,6 +45,28 @@ public class LoginActivity extends AppCompatActivity {
             rellay2.setVisibility(View.VISIBLE);
         }
     };
+
+    public FirebaseAuth getFirebaseAuth() {
+        return firebaseAuth;
+    }
+
+    public LoginActivity() {
+    }
+
+    public LoginActivity(Context mMockContext) {
+    }
+
+    public String validateTest(String userName, String password) {
+        if (getFirebaseAuth()!=null) {
+            if (getFirebaseAuth().signInWithEmailAndPassword(userName, password).isSuccessful()) {
+                return "Logged in";
+            } else {
+                return "Not logged in!";
+            }
+        } else {
+            return "No valid Firebase user";
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -61,6 +61,8 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 5000;
     private View rootView;
 
+    private View rootView;
+
     public MapFragments() {
         // Required empty public constructor
     }
@@ -73,7 +75,7 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
             rootView = inflater.inflate(R.layout.fragment_home,container,false);
 
         } else {
-        ((ViewGroup) rootView.getParent()).removeView(rootView);
+            ((ViewGroup) rootView.getParent()).removeView(rootView);
         }
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
