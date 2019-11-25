@@ -25,7 +25,7 @@ public class HistoryFragment extends Fragment {
                              Bundle savedInstanceState) {
         ((MainActivity)getActivity()).setActionBarTitle("History");
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_inbox, container, false);
+        return inflater.inflate(R.layout.fragment_history, container, false);
     }
 
 }
