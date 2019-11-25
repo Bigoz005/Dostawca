@@ -1,16 +1,15 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:mapbox="http://schemas.android.com/apk/res-auto"
-    tools:context=".MapFragments">
+    android:background="#E9EFF7"
+    android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
-
-    <com.mapbox.mapboxsdk.maps.MapView
-        android:id="@+id/MapView"
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        class="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        mapbox:mapbox_cameraZoom="12"
         android:layout_height="match_parent" />
 
-</FrameLayout>
+</LinearLayout>
