@@ -2,9 +2,12 @@ package com.example.dostawca;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -32,6 +35,11 @@ public class LoginActivity extends AppCompatActivity {
     private TextView userRegistration;
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
+    boolean logged;
+
+    public FirebaseAuth getFirebaseAuth() {
+        return firebaseAuth;
+    }
 
     RelativeLayout rellay1, rellay2;
 
@@ -44,17 +52,33 @@ public class LoginActivity extends AppCompatActivity {
         }
     };
 
+    public LoginActivity(Context mMockContext) {
+
+    }
+
+    public String validateTest(String userName, String password) {
+        if (getFirebaseAuth()!=null) {
+            if (getFirebaseAuth().signInWithEmailAndPassword(userName, password).isSuccessful()) {
+                return "Logged in";
+            } else {
+                return "Not logged in!";
+            }
+        } else {
+            return "No valid Firebase user";
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_main);
 
 
-        Name = (EditText)findViewById(R.id.etName);
-        Password = (EditText)findViewById(R.id.etPassword);
-        Info = (TextView)findViewById(R.id.tvInfo);
-        Login = (Button)findViewById(R.id.btnLogin1);
-        userRegistration = (TextView)findViewById(R.id.tvRegister);
+        Name = (EditText) findViewById(R.id.etName);
+        Password = (EditText) findViewById(R.id.etPassword);
+        Info = (TextView) findViewById(R.id.tvInfo);
+        Login = (Button) findViewById(R.id.btnLogin1);
+        userRegistration = (TextView) findViewById(R.id.tvRegister);
         rellay1 = (RelativeLayout) findViewById(R.id.rellay1);
         rellay2 = (RelativeLayout) findViewById(R.id.rellay2);
 
@@ -69,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
         Login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(validate()){
+                if (validate()) {
 
                     progressDialog.setMessage("Please wait your account is verified!");
                     progressDialog.show();
@@ -81,8 +105,8 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
 
-
                             if (!task.isSuccessful()) {
+                                logged = true;
                                 progressDialog.dismiss();
                                 Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
@@ -110,15 +134,15 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private Boolean validate(){
+    private Boolean validate() {
         Boolean result = false;
 
         String name = Name.getText().toString();
         String password = Password.getText().toString();
 
-        if(name.isEmpty() || password.isEmpty()){
+        if (name.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Please enter all the details", Toast.LENGTH_SHORT).show();
-        }else{
+        } else {
             result = true;
         }
 
@@ -126,7 +150,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void hideKeyboard(View view) {
-        InputMethodManager inputMethodManager=(InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(),0);
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }
