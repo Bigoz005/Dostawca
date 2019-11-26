@@ -128,7 +128,7 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
                     .setFastestInterval(TIME_INTERVAL_GET_LOCATION); // 1 second, in milliseconds
 
 
-            if (!mGoogleApiClient.isConnected()) {
+            if (mGoogleApiClient != null && !mGoogleApiClient.isConnected()) {
                 mGoogleApiClient.connect();
                 locationChecker(mGoogleApiClient, getActivity());
             }

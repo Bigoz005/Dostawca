@@ -1,16 +1,43 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ScannerFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Scanner"
-        android:textAlignment="center"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="349dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|top"
+        android:layout_margin="40px"
+        android:ems="10"
+        android:gravity="center_horizontal|top"
+        android:hint="Address"
+        android:inputType="textPostalAddress" />
 
+    <Button
+        android:id="@+id/buttonConfirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|top"
+        android:layout_marginTop="150px"
+        android:text="Confirm address" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:minWidth="600px"
+        android:minHeight="600px"
+        android:src="@android:color/holo_blue_dark" />
+
+    <Button
+        android:id="@+id/buttonTakePhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_margin="100px"
+        android:text="Take photo" />
 </FrameLayout>
