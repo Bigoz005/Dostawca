@@ -259,6 +259,7 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mMap.setIndoorEnabled(false);
         mMap.getUiSettings().setRotateGesturesEnabled(true);
+        mMap.setTrafficEnabled(true);
 
 
 
