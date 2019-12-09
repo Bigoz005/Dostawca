@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -59,6 +60,7 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
         LocationListener, OnMapReadyCallback, TaskLoadedCallback, GoogleMap.OnPolylineClickListener {
 
     private GoogleMap mMap;
+    private String url, url1, url2;
 
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
@@ -69,9 +71,20 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 5000;
     private View rootView;
 
-    //    private MarkerOptions place1 = new MarkerOptions().position(new LatLng(27.658143, 85.3199503)).title("Location 1");
-//    private MarkerOptions place2 = new MarkerOptions().position(new LatLng(27.667491, 85.3208583)).title("Location 2");
-    Polyline currentPolyline;
+    private MarkerOptions place1 = new MarkerOptions().position(new LatLng(27.658143, 85.3199503)).title("Location 1");
+    private MarkerOptions place2 = new MarkerOptions().position(new LatLng(27.667491, 85.3208583)).title("Location 2");
+    private MarkerOptions place3 = new MarkerOptions().position(new LatLng(27.687491, 85.3218583)).title("Location 3");
+    private MarkerOptions place4 = new MarkerOptions().position(new LatLng(27.697491, 85.3228583)).title("Location 4");
+
+    private Polyline currentPolyline;
+
+    public Polyline getCurrentPolyline() {
+        return currentPolyline;
+    }
+
+    public void setCurrentPolyline(Polyline currentPolyline) {
+        this.currentPolyline = currentPolyline;
+    }
 
 
     public MapFragments() {
@@ -93,13 +106,17 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
             // The default pattern is a solid stroke.
             polyline.setPattern(null);
         }
+//        Toast.makeText(this.getContext(), "Route type" + polyline.getTag().toString(), Toast.LENGTH_SHORT).show();
+    }
 
-        Toast.makeText(this.getContext(), "Route type" + polyline.getTag().toString(), Toast.LENGTH_SHORT).show();
+    public MapFragments getInstance(){
+        return this;
     }
 
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
+
 
         if (rootView == null) {
             ((MainActivity) getActivity()).setActionBarTitle("Map");
@@ -108,9 +125,6 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
         } else {
             ((ViewGroup) rootView.getParent()).removeView(rootView);
         }
-
-//        String url = getUrl(place1.getPosition(), place2.getPosition(), "driving");
-//        new FetchURL(getContext()).execute(url, "driving");
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
@@ -127,6 +141,9 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
                 .addApi(LocationServices.API)
                 .build();
 
+        url = getUrl(place1.getPosition(), place2.getPosition(), "driving");
+        url1 = getUrl(place2.getPosition(), place3.getPosition(), "driving");
+        url2 = getUrl(place3.getPosition(), place4.getPosition(), "driving");
         return rootView;
     }
 
@@ -147,17 +164,9 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
     }
 
     @Override
-    public void onTaskDone(Object... values) {
-        if (currentPolyline != null)
-            currentPolyline.remove();
-        currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
     }
-
 
     @Override
     public void onPause() {
@@ -185,7 +194,6 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
                     .setInterval(TIME_INTERVAL_GET_LOCATION)    // 3 seconds, in milliseconds
                     .setFastestInterval(TIME_INTERVAL_GET_LOCATION); // 1 second, in milliseconds
 
-
             if (!mGoogleApiClient.isConnected()) {
                 mGoogleApiClient.connect();
                 locationChecker(mGoogleApiClient, getActivity());
@@ -202,7 +210,6 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
 
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
             return;
         }
 
@@ -218,35 +225,33 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
                 if (locationData != null) {
 
                     LatLng point = new LatLng(locationData.getLatitude(), locationData.getLongitude());
+//                    mMap.clear();
 
-                    //mMap.clear();
-
-                    Marker marker = mMap.addMarker(new MarkerOptions().position(point).title("Your Current Location"));
-                    marker.showInfoWindow();
+//                    Marker marker = mMap.addMarker(new MarkerOptions().position(point).title("Your Current Location"));
+//                    marker.showInfoWindow();
 
                     CameraPosition cameraPosition = new CameraPosition.Builder().target(point).zoom(15).build();
-                    mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-
-                    LatLng point1 = new LatLng(51.736630, 19.449100);
-                    LatLng point2 = new LatLng(52.736630, 20.449100);
-                    LatLng point3 = new LatLng(51.736630, 18.59100);
-                    LatLng point4 = new LatLng(51.0, 19.0);
-                    LatLng point5 = new LatLng(52.0, 18.5);
-
-                    Polyline polyline1 = mMap.addPolyline(new PolylineOptions()
-                            .clickable(true)
-                            .add(
-                                    point1, point2, point3, point4, point5
-//                                    ,new LatLng(52.555, 19.0)
-                            ));
-                    polyline1.setTag("Route 1");
-                    onPolylineClick(polyline1);
-                    Marker marker1 = mMap.addMarker(new MarkerOptions().position(point1).title("1"));
-                    Marker marker2 = mMap.addMarker(new MarkerOptions().position(point2).title("2"));
-                    Marker marker3 = mMap.addMarker(new MarkerOptions().position(point3).title("3"));
-                    Marker marker4 = mMap.addMarker(new MarkerOptions().position(point4).title("4"));
-                    Marker marker5 = mMap.addMarker(new MarkerOptions().position(point5).title("5"));
+//                    mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+//
+//                    LatLng point1 = new LatLng(51.736630, 19.449100);
+//                    LatLng point2 = new LatLng(51.746630, 19.489100);
+//                    LatLng point3 = new LatLng(51.756630, 18.59100);
+//                    LatLng point4 = new LatLng(51.77, 18.7);
+//                    LatLng point5 = new LatLng(52.77, 18.5);
+//
+//                    Polyline polyline1 = mMap.addPolyline(new PolylineOptions()
+//                            .clickable(true)
+//                            .add(
+//                                    point1, point2, point3, point4, point5
+////                                    ,new LatLng(52.555, 19.0)
+//                            ));
+////                    polyline1.setTag("Route 1");
+//                    onPolylineClick(polyline1);
+//                    mMap.addMarker(new MarkerOptions().position(point1).title("1"));
+//                    mMap.addMarker(new MarkerOptions().position(point2).title("2"));
+//                    mMap.addMarker(new MarkerOptions().position(point3).title("3"));
+//                    mMap.addMarker(new MarkerOptions().position(point4).title("4"));
+//                    mMap.addMarker(new MarkerOptions().position(point5).title("5"));
 
                 }
 
@@ -273,7 +278,6 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
         } else {
             Log.i("", "Location services connection failed with code " + connectionResult.getErrorCode());
         }
-
     }
 
     public void locationChecker(GoogleApiClient mGoogleApiClient, final Activity activity) {
@@ -348,13 +352,25 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
 //                        new LatLng(51.0, 19.0),
 //                        new LatLng(52.0, 19.5)));
 //        polyline1.setTag("A");
-//
-//        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(51.684, 18.903), 4));
+
         mMap.setOnPolylineClickListener(this);
 
 //        Log.d("mylog", "Added Markers");
-//        mMap.addMarker(place1);
-//        mMap.addMarker(place2);
+        mMap.addMarker(place1);
+        mMap.addMarker(place2);
+        mMap.addMarker(place3);
+        mMap.addMarker(place4);
 
+        new FetchURL(getActivity()).execute(url1, "driving");
+        new FetchURL(getActivity()).execute(url2, "driving");
+        new FetchURL(getActivity()).execute(url, "driving");
+    }
+
+    @Override
+    public void onTaskDone(Object... values) {
+        Log.d("mylog", "MAP FRAGMENT onTaskDone");
+//        if (currentPolyline != null)
+//            currentPolyline.remove();
+            currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
     }
 }
