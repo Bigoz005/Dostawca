@@ -22,7 +22,10 @@ import java.io.IOException;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import pub.devrel.easypermissions.EasyPermissions;
+
 public class QRScannerFragment extends Fragment {
+    private static final int CAMERA_REQUEST_CODE =100;
     SurfaceView surfaceView;
     CameraSource cameraSource;
     TextView textView;
@@ -35,6 +38,11 @@ public class QRScannerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        EasyPermissions.requestPermissions(
+                this,
+                "Camera",
+                CAMERA_REQUEST_CODE,
+                Manifest.permission.CAMERA );
         ((MainActivity)getActivity()).setActionBarTitle("QR Scanner");
 
         View view = inflater.inflate(R.layout.fragment_qrscanner, container, false);
