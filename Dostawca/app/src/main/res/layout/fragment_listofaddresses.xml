@@ -21,7 +21,7 @@
 
         <ListView
             android:id="@+id/current_route_list"
-            android:layout_width="413dp"
+            android:layout_width="0dp"
             android:layout_height="324dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,7 +30,8 @@
         </ListView>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="409dp"
+            android:layout_width="0dp"
+
             android:layout_height="wrap_content"
 
             app:layout_constraintBottom_toTopOf="@+id/save_point_button"

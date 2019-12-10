@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.core.widget.ListViewAutoScrollHelper;
 import androidx.fragment.app.Fragment;
@@ -26,9 +27,8 @@ import java.util.List;
  */
 
 public class ListOfAddressesFragment extends Fragment {
-    ArrayAdapter listViewAdapter;
-    List<String> points = new ArrayList();
-    TextView textView;
+    private List<Point> points = CurrentRouteService.getCurrentRoute().getPoints();
+    private TextView textView;
 
     public ListOfAddressesFragment() {
         // Required empty public constructor
@@ -40,43 +40,31 @@ public class ListOfAddressesFragment extends Fragment {
                              Bundle savedInstanceState) {
         ((MainActivity) getActivity()).setActionBarTitle("List Of Addresses");
 
-        Route currentRoute = CurrentRouteService.getCurrentRoute();
-        for (Point p : currentRoute.getPoints()) {
-            points.add(p.getName());
-        }
         if (points.isEmpty()) {
-            points.add("Lista jest pusta!");
+            Toast toast = Toast.makeText(getActivity(), "Brak adresów! Przejdź do skanera aby dodać elementy.", Toast.LENGTH_LONG);
+            toast.show();
         }
 
 
         View rootView = inflater.inflate(R.layout.fragment_listofaddresses, container, false);
         ListView lv = (ListView) rootView.findViewById(R.id.current_route_list);
-
-        listViewAdapter = new ArrayAdapter<String>(
-                getActivity(), android.R.layout.simple_list_item_1, points
-        );
-
-        lv.setAdapter(listViewAdapter);
-
-
+        CustomPointElementAdapter adapter = new CustomPointElementAdapter(points, getActivity());
+        lv.setAdapter(adapter);
         Button button = (Button) rootView.findViewById(R.id.save_point_button);
         textView = rootView.findViewById(R.id.address_input);
-
         button.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         String text = textView.getText().toString();
-                        points.add(text);
-                        CurrentRouteService.addPointToCurrentRoute(new Point(text, "XD", "XDD"));
+                        if (text.length() == 0) {
+                            return;
+                        }
+                        points.add(new Point(textView.getText().toString(), "", "12.4, 49.3"));
                         textView.setText("");
-
-
                     }
                 }
         );
-
-
         return rootView;
     }
 }
