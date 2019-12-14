@@ -29,8 +29,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:minWidth="600px"
-        android:minHeight="600px"
+        android:maxWidth="500px"
+        android:maxHeight="500px"
+        android:minWidth="500px"
+        android:minHeight="500px"
         android:src="@android:color/holo_blue_dark" />
 
     <Button
