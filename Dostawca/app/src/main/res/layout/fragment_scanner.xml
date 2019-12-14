@@ -1,8 +1,9 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/grad_bg"
     tools:context=".ScannerFragment">
 
     <EditText
@@ -12,6 +13,8 @@
         android:layout_gravity="center_horizontal|top"
         android:layout_margin="40px"
         android:ems="10"
+        android:textColorHint="@color/white"
+        android:textColor="@color/white"
         android:gravity="center_horizontal|top"
         android:hint="Address"
         android:inputType="textPostalAddress" />
@@ -19,27 +22,52 @@
     <Button
         android:id="@+id/buttonConfirm"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|top"
-        android:layout_marginTop="150px"
-        android:text="Confirm address" />
+        android:layout_height="40dp"
+        android:layout_below="@+id/editText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/btn_bg"
+        android:fontFamily="sans-serif-medium"
+        android:paddingLeft="70dp"
+        android:paddingRight="70dp"
+        android:text="Confirm address"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+
+
+
+
+        />
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
+        android:layout_width="285dp"
+        android:layout_marginTop="60dp"
+        android:layout_centerHorizontal="true"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:maxWidth="500px"
         android:maxHeight="500px"
         android:minWidth="500px"
         android:minHeight="500px"
-        android:src="@android:color/holo_blue_dark" />
+        android:src="@android:color/holo_blue_dark"
+        android:layout_below="@+id/buttonConfirm"
+        />
 
     <Button
         android:id="@+id/buttonTakePhoto"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_margin="100px"
-        android:text="Take photo" />
-</FrameLayout>
+        android:layout_height="40dp"
+        android:layout_below="@+id/imageView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/btn_bg"
+        android:fontFamily="sans-serif-medium"
+        android:paddingLeft="70dp"
+        android:paddingRight="70dp"
+        android:text="Take photo"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="16sp"/>
+</RelativeLayout>
