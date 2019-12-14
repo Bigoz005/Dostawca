@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity
         /**LOGOUT BROADCAST **/
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("com.package.ACTION_LOGOUT");
-        registerReceiver(new BroadcastReceiver() {
+         registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 Log.d("onReceive","Logout in progress");
