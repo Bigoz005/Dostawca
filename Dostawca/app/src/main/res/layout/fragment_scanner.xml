@@ -43,31 +43,36 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="285dp"
-        android:layout_marginTop="60dp"
-        android:layout_centerHorizontal="true"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:maxWidth="500px"
-        android:maxHeight="500px"
-        android:minWidth="500px"
-        android:minHeight="500px"
-        android:src="@android:color/holo_blue_dark"
         android:layout_below="@+id/buttonConfirm"
-        />
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:maxWidth="400px"
+        android:maxHeight="500px"
+        android:minWidth="400px"
+        android:minHeight="500px"
+        android:src="@android:color/holo_blue_dark" />
 
     <Button
         android:id="@+id/buttonTakePhoto"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_below="@+id/imageView"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentRight="false"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/btn_bg"
         android:fontFamily="sans-serif-medium"
+        android:gravity="center_horizontal|center_vertical"
         android:paddingLeft="70dp"
         android:paddingRight="70dp"
         android:text="Take photo"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        android:textSize="16sp"/>
+        android:textSize="16sp" />
 </RelativeLayout>
