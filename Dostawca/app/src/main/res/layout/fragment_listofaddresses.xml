@@ -11,13 +11,20 @@
         android:layout_height="match_parent">
 
         <Button
-            android:id="@+id/save_point_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Zatwierdź"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+                android:id="@+id/save_point_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dodaj adres"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+                android:id="@+id/go_to_map"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pokaz trase"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/save_point_button" />
 
         <ListView
             android:id="@+id/current_route_list"

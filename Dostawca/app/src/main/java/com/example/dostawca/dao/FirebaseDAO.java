@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import com.example.dostawca.dto.Route;
 import com.example.dostawca.dto.RouteList;
 import com.google.firebase.FirebaseError;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,14 +29,14 @@ public class FirebaseDAO {
 
     public void saveRouteForCurrentUser(Route route) {
         //todo: get current user ID from service
-        DatabaseReference pushedKey = firebaseDatabase.getReference().child("users").child("Du9Rue5ssZS4gYPmeUuL2rrKu4O2").push();
+        DatabaseReference pushedKey = firebaseDatabase.getReference().child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).push();
         pushedKey.setValue(route);
     }
 
 
     public void getRoutes() {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        firebaseDatabase.getReference().child("users").child("Du9Rue5ssZS4gYPmeUuL2rrKu4O2").addValueEventListener(new ValueEventListener() {
+        firebaseDatabase.getReference().child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 Log.e("Count ", "" + snapshot.getChildrenCount());

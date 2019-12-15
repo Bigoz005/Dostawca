@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.example.dostawca.dto.Point;
 import com.example.dostawca.dto.Route;
 import com.example.dostawca.service.CurrentRouteService;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -47,7 +48,6 @@ public class PointsActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(PointsActivity.this, route.getPoints().toString(), Toast.LENGTH_SHORT).show();
                         //todo: go to map - points: currentRoute.getPoints();
                     }
                 }

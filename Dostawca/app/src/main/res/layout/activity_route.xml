@@ -6,10 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".PointsActivity">
 
+    <Button
+            android:id="@+id/show_route"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pokaż trasę"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
     <ListView
         android:id="@+id/pointslist"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="-40dp"
-        tools:layout_editor_absoluteY="0dp" />
+        tools:layout_editor_absoluteY="0dp" >
+
+    </ListView>
 </androidx.constraintlayout.widget.ConstraintLayout>
