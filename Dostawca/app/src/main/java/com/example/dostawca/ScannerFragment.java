@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.method.DateTimeKeyListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.dostawca.dto.Point;
+import com.example.dostawca.service.CurrentRouteService;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -79,14 +82,14 @@ public class ScannerFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ((MainActivity)getActivity()).setActionBarTitle("Scanner");
+        ((MainActivity) getActivity()).setActionBarTitle("Scanner");
         // Inflate the layout for this fragment
         View view = null;
         view = inflater.inflate(R.layout.fragment_scanner, container, false);
-        buttonTakePhoto = (Button)view.findViewById(R.id.buttonTakePhoto);
+        buttonTakePhoto = (Button) view.findViewById(R.id.buttonTakePhoto);
         editText = (EditText) view.findViewById(R.id.editText);
-        imageView = (ImageView)view.findViewById(R.id.imageView);
-        buttonConfirm = (Button)view.findViewById(R.id.buttonConfirm);
+        imageView = (ImageView) view.findViewById(R.id.imageView);
+        buttonConfirm = (Button) view.findViewById(R.id.buttonConfirm);
 
         buttonTakePhoto.setOnClickListener(this);
         buttonConfirm.setOnClickListener(this);
@@ -112,7 +115,7 @@ public class ScannerFragment extends Fragment implements View.OnClickListener {
         String address = editText.getText().toString();
         String addressQuery = "";
         try {
-             addressQuery = URLEncoder.encode(address, "utf-8");
+            addressQuery = URLEncoder.encode(address, "utf-8");
         } catch (UnsupportedEncodingException e) {
             Toast.makeText(getActivity(), "Błąd w walidacji adresu", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
@@ -139,7 +142,7 @@ public class ScannerFragment extends Fragment implements View.OnClickListener {
                             Toast.makeText(getActivity(), "Błąd w walidacji adresu", Toast.LENGTH_SHORT).show();
                             e.printStackTrace();
                         }
-                        if(places.length() == 0){
+                        if (places.length() == 0) {
                             Toast.makeText(getActivity(), "Taki adres nie istnieje!", Toast.LENGTH_SHORT).show();
                         } else {
                             try {
@@ -164,21 +167,26 @@ public class ScannerFragment extends Fragment implements View.OnClickListener {
 
     public void onAddressValidationSuccess(String lat, String lon) {
         Toast.makeText(getActivity(), "Lat: " + lat + " Lon: " + lon, Toast.LENGTH_SHORT).show();
+        CurrentRouteService.addPointToCurrentRoute(new Point(editText.getText().toString(),
+                "",
+                lat, lon
+        ));
+
     }
 
     public void takePhoto() {
-            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            File file = new File(Environment.getExternalStorageDirectory(), "/dostawca" + "/photo_" + timeStamp + ".png");
-            image = Uri.fromFile(file);
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        File file = new File(Environment.getExternalStorageDirectory(), "/dostawca" + "/photo_" + timeStamp + ".png");
+        image = Uri.fromFile(file);
 
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, image);
-            startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, image);
+        startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
     }
 
     public void parseAddress(ArrayList<String> blocks) {
         String result = "";
-        for(int i=0; i<blocks.size();i++){
+        for (int i = 0; i < blocks.size(); i++) {
             result += blocks.get(i);
         }
         editText.setText(result);
@@ -215,7 +223,7 @@ public class ScannerFragment extends Fragment implements View.OnClickListener {
                                     public void onSuccess(FirebaseVisionText firebaseVisionText) {
 
                                         ArrayList<String> result = new ArrayList<>();
-                                        for (FirebaseVisionText.TextBlock block: firebaseVisionText.getTextBlocks()) {
+                                        for (FirebaseVisionText.TextBlock block : firebaseVisionText.getTextBlocks()) {
                                             String blockText = block.getText();
                                             blockText = Normalizer.normalize(blockText, Normalizer.Form.NFD);
                                             Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
