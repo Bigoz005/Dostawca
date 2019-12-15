@@ -5,7 +5,23 @@ import java.io.Serializable;
 public class Point implements Serializable {
     private String name;
     private String photoUrl;
-    private String coordinates;
+    private String lat, lng;
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
+    }
 
     public Point() {
     }
@@ -26,17 +42,11 @@ public class Point implements Serializable {
         this.photoUrl = photoUrl;
     }
 
-    public String getCoordinates() {
-        return coordinates;
-    }
 
-    public void setCoordinates(String coordinates) {
-        this.coordinates = coordinates;
-    }
-
-    public Point(String name, String photoUrl, String coordinates) {
+    public Point(String name, String photoUrl, String lat, String lng) {
         this.name = name;
         this.photoUrl = photoUrl;
-        this.coordinates = coordinates;
+        this.lat = lat;
+        this.lng = lng;
     }
 }

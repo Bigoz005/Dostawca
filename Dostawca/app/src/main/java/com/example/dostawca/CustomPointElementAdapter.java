@@ -51,7 +51,7 @@ public class CustomPointElementAdapter extends BaseAdapter implements ListAdapte
 
         //Handle TextView and display string from your list
         TextView listItemText = (TextView) view.findViewById(R.id.list_item_string);
-        listItemText.setText(points.get(position).getName() + "\n" + points.get(position).getCoordinates());
+        listItemText.setText(points.get(position).getName() + "\n" + points.get(position).getLat() + ", " + points.get(position).getLng());
 
         //Handle buttons and add onClickListeners
         Button deleteBtn = (Button) view.findViewById(R.id.delete_btn);
