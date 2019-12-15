@@ -34,29 +34,6 @@ public class FirebaseDAO {
     }
 
 
-    public void getRoutes() {
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        firebaseDatabase.getReference().child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                Log.e("Count ", "" + snapshot.getChildrenCount());
-                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                    Route route = postSnapshot.getValue(Route.class);
-                    routes.add(route);
-                    System.out.println("Got route: " + route.getName());
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e("Count ", "" + databaseError.getMessage());
-
-            }
-
-        });
-    }
-
-
 }
 
 
