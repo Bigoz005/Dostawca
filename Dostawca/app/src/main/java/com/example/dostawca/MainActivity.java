@@ -1,7 +1,10 @@
 package com.example.dostawca;
 
+
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -28,7 +31,6 @@ import java.security.Policy;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,  TaskLoadedCallback {
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +80,19 @@ public class MainActivity extends AppCompatActivity
 
         navigationView.setCheckedItem(R.id.nav_map);
         navigationView.getMenu().getItem(1).setActionView(R.layout.menu_image);
+
+        /**LOGOUT BROADCAST **/
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("com.package.ACTION_LOGOUT");
+         registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Log.d("onReceive","Logout in progress");
+                //At this point you should start the login activity and finish this one
+                finish();
+            }
+        }, intentFilter);
+        //** LOGOUT BROADCAST **//
     }
 
     public void setActionBarTitle(String title) {

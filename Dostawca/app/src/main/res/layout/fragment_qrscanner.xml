@@ -1,16 +1,35 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/grad_bg"
     tools:context=".QRScannerFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="QR Scanner"
+        android:layout_height="30dp"
         android:textAlignment="center"
         android:textSize="24sp"
         android:textStyle="bold" />
 
-</FrameLayout>
+    <SurfaceView
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:id="@+id/camerapreview"
+        ></SurfaceView>
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:id="@+id/QRText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Scan"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        />
+
+</LinearLayout>

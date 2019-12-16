@@ -86,7 +86,6 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
         this.currentPolyline = currentPolyline;
     }
 
-
     public MapFragments() {
         // Required empty public constructor
     }
@@ -209,6 +208,7 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
     public void onConnected(@Nullable Bundle bundle) {
 
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
@@ -342,6 +342,7 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mMap.setIndoorEnabled(false);
         mMap.getUiSettings().setRotateGesturesEnabled(true);
+        mMap.setTrafficEnabled(true);
 
 //        Polyline polyline1 = mMap.addPolyline(new PolylineOptions()
 //                .clickable(true)

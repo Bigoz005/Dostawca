@@ -1,6 +1,7 @@
 package com.example.dostawca;
 
 import android.animation.Animator;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
@@ -8,12 +9,17 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewTreeObserver;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 public class SettingActivity extends AppCompatActivity {
 
     private View background;
+    private FirebaseAuth firebaseAuth;
+    private Button logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +48,28 @@ public class SettingActivity extends AppCompatActivity {
 
         }
 
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        logout = (Button)findViewById(R.id.btnLogout);
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Logout();
+                finish();
+
+                Intent broadcastIntent = new Intent();
+                broadcastIntent.setAction("com.package.ACTION_LOGOUT");
+                sendBroadcast(broadcastIntent);
+            }
+        });
+
+    }
+
+    private void Logout(){
+        firebaseAuth.signOut();
+        finish();
+        startActivity(new Intent(SettingActivity.this, LoginActivity.class));
     }
 
     private void circularRevealActivity() {
