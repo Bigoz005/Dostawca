@@ -1,9 +1,12 @@
 package com.example.dostawca;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -16,6 +19,7 @@ import com.example.dostawca.service.CurrentRouteService;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class PointsActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
@@ -48,11 +52,23 @@ public class PointsActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        //todo: go to map - points: currentRoute.getPoints();
+                        Log.d("mylog", "CLICKED");
+
+//
+//                        MapFragments mapFragments = (MapFragments) getSupportFragmentManager().findFragmentById(R.id.flMain);
+                        MapFragments mapFragments = new MapFragments();
+
+                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                        ft.replace(R.id.flMain, mapFragments);
+                        ft.commit();
+                        mapFragments.setNewRoute(route);
+//                        FragmentManager fm = getSupportFragmentManager();
+//                        fm.beginTransaction()
+//                                .show(mapFragments)
+//                                .commit();
                     }
                 }
         );
-
-
     }
 }
+

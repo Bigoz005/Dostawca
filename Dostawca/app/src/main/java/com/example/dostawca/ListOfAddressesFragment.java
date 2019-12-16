@@ -25,6 +25,7 @@ import com.android.volley.toolbox.Volley;
 
 import androidx.core.widget.ListViewAutoScrollHelper;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.dostawca.dao.FirebaseDAO;
 import com.example.dostawca.dto.Point;
@@ -110,7 +111,14 @@ public class ListOfAddressesFragment extends Fragment {
                         CurrentRouteService.
                                 setCurrentRoute(new Route());
 
-                        //todo: go to map - points: currentRoute.getPoints();
+                        Log.d("mylog", "CLICKED");
+
+                        MapFragments mapFragments = new MapFragments();
+//
+//                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//                        ft.replace(R.id.flMain, mapFragments);
+//                        ft.commit();
+                        mapFragments.setNewRoute(currentRoute);
                     }
                 }
         );

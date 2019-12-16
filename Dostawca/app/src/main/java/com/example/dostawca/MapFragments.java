@@ -1,6 +1,5 @@
 package com.example.dostawca;
 
-
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
@@ -20,6 +19,8 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.dostawca.dto.Point;
+import com.example.dostawca.dto.Route;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -76,6 +77,10 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
     private MarkerOptions place3 = new MarkerOptions().position(new LatLng(27.687491, 85.3218583)).title("Location 3");
     private MarkerOptions place4 = new MarkerOptions().position(new LatLng(27.697491, 85.3228583)).title("Location 4");
 
+
+    private ArrayList<String> urls = new ArrayList<>();
+    private ArrayList<MarkerOptions> places = new ArrayList<>();
+
     private Polyline currentPolyline;
 
     public Polyline getCurrentPolyline() {
@@ -89,6 +94,30 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
     public MapFragments() {
         // Required empty public constructor
     }
+
+    public void setNewRoute(Route route) {
+        int i = 0;
+        double lat = 0;
+        double lng = 0;
+        for (Point point : route.getPoints()) {
+            Log.d("myTag", "PUNKT " + point.getLat() + ", " + point.getLng());
+            lat = new Double(point.getLat());
+            lng = new Double(point.getLng());
+            this.places.add(new MarkerOptions().position(new LatLng(lat, lng)).title(point.getName()));
+            this.mMap.addMarker(places.get(i));
+            i++;
+        }
+        for (i = 0; i < this.places.size(); i++) {
+            if (i + 1 <= this.places.size()) {
+                urls.set(i, getUrl(places.get(i).getPosition(), places.get(i).getPosition(), "driving"));
+            }
+        }
+        for (i = 0; i <= this.urls.size(); i++) {
+            new FetchURL(getActivity()).execute(urls.get(i), "driving");
+        }
+    }
+
+    ;
 
     private static final PatternItem DOT = new Dot();
     private static final PatternItem GAP = new Gap(5);
@@ -108,7 +137,7 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
 //        Toast.makeText(this.getContext(), "Route type" + polyline.getTag().toString(), Toast.LENGTH_SHORT).show();
     }
 
-    public MapFragments getInstance(){
+    public MapFragments getInstance() {
         return this;
     }
 
@@ -140,9 +169,9 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
                 .addApi(LocationServices.API)
                 .build();
 
-        url = getUrl(place1.getPosition(), place2.getPosition(), "driving");
-        url1 = getUrl(place2.getPosition(), place3.getPosition(), "driving");
-        url2 = getUrl(place3.getPosition(), place4.getPosition(), "driving");
+//        url = getUrl(place1.getPosition(), place2.getPosition(), "driving");
+//        url1 = getUrl(place2.getPosition(), place3.getPosition(), "driving");
+//        url2 = getUrl(place3.getPosition(), place4.getPosition(), "driving");
         return rootView;
     }
 
@@ -357,14 +386,14 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
         mMap.setOnPolylineClickListener(this);
 
 //        Log.d("mylog", "Added Markers");
-        mMap.addMarker(place1);
-        mMap.addMarker(place2);
-        mMap.addMarker(place3);
-        mMap.addMarker(place4);
+//        mMap.addMarker(place1);
+//        mMap.addMarker(place2);
+//        mMap.addMarker(place3);
+//        mMap.addMarker(place4);
 
-        new FetchURL(getActivity()).execute(url1, "driving");
-        new FetchURL(getActivity()).execute(url2, "driving");
-        new FetchURL(getActivity()).execute(url, "driving");
+//        new FetchURL(getActivity()).execute(url1, "driving");
+//        new FetchURL(getActivity()).execute(url2, "driving");
+//        new FetchURL(getActivity()).execute(url, "driving");
     }
 
     @Override
@@ -372,6 +401,6 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
         Log.d("mylog", "MAP FRAGMENT onTaskDone");
 //        if (currentPolyline != null)
 //            currentPolyline.remove();
-            currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
+        currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
     }
 }
