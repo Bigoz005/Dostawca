@@ -6,51 +6,52 @@
     android:background="@drawable/grad_bg"
     android:orientation="vertical">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <Button
-                android:id="@+id/save_point_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Dodaj adres"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-        <Button
-                android:id="@+id/go_to_map"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Pokaz trase"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/save_point_button" />
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
         <ListView
-            android:id="@+id/current_route_list"
-            android:layout_width="0dp"
-            android:layout_height="324dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+                android:id="@+id/current_route_list"
+                android:layout_width="match_parent"
+                android:layout_height="324dp"
+                android:layout_weight="9">
 
         </ListView>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="0dp"
+                android:layout_width="match_parent"
 
-            android:layout_height="wrap_content"
+                android:layout_height="wrap_content"
 
-            app:layout_constraintBottom_toTopOf="@+id/save_point_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/current_route_list">
+                android:layout_weight="1">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/address_input"
-                android:layout_width="match_parent"
-                android:layout_height="69dp"
-                android:hint="Wprowadź adres ręcznie" />
+                    android:id="@+id/address_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="69dp"
+                    android:hint="Wprowadź adres ręcznie" />
         </com.google.android.material.textfield.TextInputLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+            <Button
+                    android:id="@+id/save_point_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dodaj adres" />
+
+            <Button
+                    android:id="@+id/go_to_map"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pokaz trase" />
+        </LinearLayout>
+
+    </LinearLayout>
+
 </LinearLayout>
