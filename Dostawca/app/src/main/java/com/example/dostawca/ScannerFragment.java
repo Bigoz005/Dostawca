@@ -13,6 +13,7 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.text.method.DateTimeKeyListener;
 import android.util.Log;
@@ -176,6 +177,9 @@ public class ScannerFragment extends Fragment implements View.OnClickListener {
     }
 
     public void takePhoto() {
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         File file = new File(Environment.getExternalStorageDirectory(), "/dostawca" + "/photo_" + timeStamp + ".png");
         image = Uri.fromFile(file);
