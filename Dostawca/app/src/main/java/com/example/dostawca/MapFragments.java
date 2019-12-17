@@ -60,9 +60,10 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener, OnMapReadyCallback, TaskLoadedCallback, GoogleMap.OnPolylineClickListener {
 
-    private GoogleMap mMap;
+    public GoogleMap mMap;
     private String url, url1, url2;
 
+    private Route route;
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
 
@@ -81,18 +82,14 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
     private ArrayList<String> urls = new ArrayList<>();
     private ArrayList<MarkerOptions> places = new ArrayList<>();
 
-    private Polyline currentPolyline;
-
-    public Polyline getCurrentPolyline() {
-        return currentPolyline;
-    }
-
-    public void setCurrentPolyline(Polyline currentPolyline) {
-        this.currentPolyline = currentPolyline;
-    }
+    public Polyline currentPolyline;
 
     public MapFragments() {
         // Required empty public constructor
+    }
+
+    public MapFragments(Route route) {
+        this.route= route;
     }
 
     public void setNewRoute(Route route) {
@@ -107,13 +104,16 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
             this.mMap.addMarker(places.get(i));
             i++;
         }
+
         for (i = 0; i < this.places.size(); i++) {
-            if (i + 1 <= this.places.size()) {
-                urls.set(i, getUrl(places.get(i).getPosition(), places.get(i).getPosition(), "driving"));
+            if (i + 1 < this.places.size()) {
+                this.urls.add(i, getUrl(places.get(i).getPosition(), places.get(i+1).getPosition(), "driving"));
+                Log.d("myTag", "i: " + i);
+                Log.d("myTag", "url: " + places.get(i).getPosition() + " " + places.get(i).getPosition() + " driving");
             }
         }
-        for (i = 0; i <= this.urls.size(); i++) {
-            new FetchURL(getActivity()).execute(urls.get(i), "driving");
+        for (i = 0; i < this.urls.size(); i++) {
+                new FetchURL(getActivity()).execute(urls.get(i), "driving");
         }
     }
 
@@ -144,7 +144,6 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-
 
         if (rootView == null) {
             ((MainActivity) getActivity()).setActionBarTitle("Map");
@@ -394,13 +393,16 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
 //        new FetchURL(getActivity()).execute(url1, "driving");
 //        new FetchURL(getActivity()).execute(url2, "driving");
 //        new FetchURL(getActivity()).execute(url, "driving");
+        if(route!=null) {
+            setNewRoute(route);
+        }
     }
 
     @Override
     public void onTaskDone(Object... values) {
         Log.d("mylog", "MAP FRAGMENT onTaskDone");
-//        if (currentPolyline != null)
-//            currentPolyline.remove();
+        if (currentPolyline != null)
+            currentPolyline.remove();
         currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
     }
 }

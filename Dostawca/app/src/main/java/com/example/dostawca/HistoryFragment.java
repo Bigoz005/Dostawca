@@ -23,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class HistoryFragment extends Fragment {
@@ -76,7 +77,6 @@ public class HistoryFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), PointsActivity.class);
                 intent.putExtra("route", routesHistory.get(position));
                 startActivity(intent);
-
 
             }
         });

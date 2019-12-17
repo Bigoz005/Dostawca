@@ -1,6 +1,7 @@
 package com.example.dostawca;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -73,6 +74,7 @@ public class ListOfAddressesFragment extends Fragment {
 
 
         View rootView = inflater.inflate(R.layout.fragment_listofaddresses, container, false);
+
         ListView lv = (ListView) rootView.findViewById(R.id.current_route_list);
         adapter = new CustomPointElementAdapter(points, getActivity());
         lv.setAdapter(adapter);
@@ -112,6 +114,9 @@ public class ListOfAddressesFragment extends Fragment {
                                 setCurrentRoute(new Route());
 
                         Log.d("mylog", "CLICKED");
+
+
+                        List fragments = getFragmentManager().getFragments();
 
                         MapFragments mapFragments = new MapFragments();
 //
