@@ -21,6 +21,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.dostawca.dto.Route;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -30,12 +31,19 @@ import com.google.android.material.snackbar.Snackbar;
 import java.security.Policy;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,  TaskLoadedCallback {
+        implements NavigationView.OnNavigationItemSelectedListener, TaskLoadedCallback {
+    Route route;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Intent intent = getIntent();
+        if(intent.getSerializableExtra("route") != null) {
+            route = (Route) intent.getSerializableExtra("route");
+        }else{
+            route = null;
+        }
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -68,15 +76,20 @@ public class MainActivity extends AppCompatActivity
         imgProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this,ProfileActivity.class);
+                Intent i = new Intent(MainActivity.this, ProfileActivity.class);
                 startActivity(i);
             }
         });
 
         //default fragment for home
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.flMain,new MapFragments());
-        ft.commit();
+        if (this.route != null) {
+            ft.replace(R.id.flMain, new MapFragments(this.route), "mapFragments");
+            ft.commit();
+        } else {
+            ft.replace(R.id.flMain, new MapFragments(), "mapFragments");
+            ft.commit();
+        }
 
         navigationView.setCheckedItem(R.id.nav_map);
         navigationView.getMenu().getItem(1).setActionView(R.layout.menu_image);
@@ -84,10 +97,10 @@ public class MainActivity extends AppCompatActivity
         /**LOGOUT BROADCAST **/
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("com.package.ACTION_LOGOUT");
-         registerReceiver(new BroadcastReceiver() {
+        registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Log.d("onReceive","Logout in progress");
+                Log.d("onReceive", "Logout in progress");
                 //At this point you should start the login activity and finish this one
                 finish();
             }
@@ -125,7 +138,7 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent i = new Intent(MainActivity.this,SettingActivity.class);
+            Intent i = new Intent(MainActivity.this, SettingActivity.class);
             startActivity(i);
             return true;
         }
@@ -141,26 +154,31 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_map) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.flMain,new MapFragments());
-            ft.commit();
-        }else if (id == R.id.scanner) {
+            if (this.route != null) {
+                ft.replace(R.id.flMain, new MapFragments(this.route), "mapFragments");
+                ft.commit();
+            } else {
+                ft.replace(R.id.flMain, new MapFragments(), "mapFragments");
+                ft.commit();
+            }
+        } else if (id == R.id.scanner) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.flMain,new ScannerFragment());
+            ft.replace(R.id.flMain, new ScannerFragment());
             ft.commit();
-        }else if (id == R.id.qr_scanner) {
+        } else if (id == R.id.qr_scanner) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.flMain,new QRScannerFragment());
+            ft.replace(R.id.flMain, new QRScannerFragment());
             ft.commit();
-        }else if (id == R.id.addresses) {
+        } else if (id == R.id.addresses) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.flMain,new ListOfAddressesFragment());
+            ft.replace(R.id.flMain, new ListOfAddressesFragment());
             ft.commit();
         } else if (id == R.id.nav_history) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.flMain,new HistoryFragment());
+            ft.replace(R.id.flMain, new HistoryFragment());
             ft.commit();
         } else if (id == R.id.nav_setting) {
-            Intent i = new Intent(MainActivity.this,SettingActivity.class);
+            Intent i = new Intent(MainActivity.this, SettingActivity.class);
             startActivity(i);
         }
 
@@ -171,8 +189,11 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onTaskDone(Object... values) {
-        MapFragments mapFragments = (MapFragments) getSupportFragmentManager().findFragmentById(R.id.flMain);
-         mapFragments.onTaskDone(values);
+        MapFragments mapFragments = (MapFragments) getSupportFragmentManager().findFragmentByTag("mapFragments");
+        if (mapFragments.currentPolyline != null)
+            mapFragments.currentPolyline.remove();
+        mapFragments.currentPolyline = mapFragments.mMap.addPolyline((PolylineOptions) values[0]);
+//        mapFragments.onTaskDone(values);
     }
 
 }
