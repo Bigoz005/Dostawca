@@ -115,15 +115,14 @@ public class ListOfAddressesFragment extends Fragment {
 
                         Log.d("mylog", "CLICKED");
 
-
-                        List fragments = getFragmentManager().getFragments();
-
-                        MapFragments mapFragments = new MapFragments();
+                        Intent myIntent = new Intent(getContext(), MainActivity.class);
+                        myIntent.putExtra("route", currentRoute);
+                        getContext().startActivity(myIntent);
 //
 //                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 //                        ft.replace(R.id.flMain, mapFragments);
 //                        ft.commit();
-                        mapFragments.setNewRoute(currentRoute);
+
                     }
                 }
         );

@@ -17,22 +17,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager.widget.ViewPager;
 
 import com.example.dostawca.dto.Route;
-import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
-
-import java.security.Policy;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, TaskLoadedCallback {
     Route route;
+    LatLng currentLocal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +38,16 @@ public class MainActivity extends AppCompatActivity
         Intent intent = getIntent();
         if(intent.getSerializableExtra("route") != null) {
             route = (Route) intent.getSerializableExtra("route");
+
         }else{
             route = null;
+        }
+        if(intent.getSerializableExtra("currentLocal") != null) {
+            Double lat = (Double) intent.getSerializableExtra("currentLat");
+            Double lng = (Double) intent.getSerializableExtra("currentLng");
+            currentLocal = new LatLng(lat,lng);
+        }else{
+            currentLocal = new LatLng(51, 19);
         }
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -101,7 +106,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onReceive(Context context, Intent intent) {
                 Log.d("onReceive", "Logout in progress");
-                //At this point you should start the login activity and finish this one
+                //At this cameraFirstPosition you should start the login activity and finish this one
                 finish();
             }
         }, intentFilter);
@@ -190,9 +195,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onTaskDone(Object... values) {
         MapFragments mapFragments = (MapFragments) getSupportFragmentManager().findFragmentByTag("mapFragments");
-        if (mapFragments.currentPolyline != null)
-            mapFragments.currentPolyline.remove();
+//        if (mapFragments.currentPolyline != null)
+//            mapFragments.currentPolyline.remove();
         mapFragments.currentPolyline = mapFragments.mMap.addPolyline((PolylineOptions) values[0]);
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(mapFragments.cameraFirstPosition).zoom(10).build();
+        mapFragments.mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 //        mapFragments.onTaskDone(values);
     }
 
