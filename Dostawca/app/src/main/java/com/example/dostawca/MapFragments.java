@@ -60,7 +60,7 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
 //    private String url, url1, url2;
 
     public Marker marker;
-    private Route route;
+    public Route route;
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
 
@@ -109,28 +109,30 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
 
 //            this.places.add(new MarkerOptions().position(new LatLng(marker.getPosition().latitude, marker.getPosition().longitude)).title("Start"));
 //        }
-        if(route!=null) {
-            for (Point point : route.getPoints()) {
-                Log.d("myTag", "PUNKT " + point.getLat() + ", " + point.getLng());
-                lat = new Double(point.getLat());
-                lng = new Double(point.getLng());
-                if (i == 0) {
-                    this.cameraFirstPosition = new LatLng(lat, lng);
+        if (route != null) {
+            if (route.getPoints().size() > 1) {
+                for (Point point : route.getPoints()) {
+                    Log.d("myTag", "PUNKT " + point.getLat() + ", " + point.getLng());
+                    lat = new Double(point.getLat());
+                    lng = new Double(point.getLng());
+                    if (i == 0) {
+                        this.cameraFirstPosition = new LatLng(lat, lng);
+                    }
+                    this.places.add(new MarkerOptions().position(new LatLng(lat, lng)).title(point.getName()));
+                    this.mMap.addMarker(places.get(i));
+                    i++;
                 }
-                this.places.add(new MarkerOptions().position(new LatLng(lat, lng)).title(point.getName()));
-                this.mMap.addMarker(places.get(i));
-                i++;
-            }
 
-            for (i = 0; i < this.places.size(); i++) {
-                if (i + 1 < this.places.size()) {
-                    this.urls.add(i, getUrl(places.get(i).getPosition(), places.get(i + 1).getPosition(), "driving"));
-                    Log.d("myTag", "i: " + i);
-                    Log.d("myTag", "url: " + places.get(i).getPosition() + " " + places.get(i).getPosition() + " driving");
+                for (i = 0; i < this.places.size(); i++) {
+                    if (i + 1 < this.places.size()) {
+                        this.urls.add(i, getUrl(places.get(i).getPosition(), places.get(i + 1).getPosition(), "driving"));
+                        Log.d("myTag", "i: " + i);
+                        Log.d("myTag", "url: " + places.get(i).getPosition() + " " + places.get(i).getPosition() + " driving");
+                    }
                 }
-            }
-            for (i = 0; i < this.urls.size(); i++) {
-                new FetchURL(getActivity()).execute(urls.get(i), "driving");
+                for (i = 0; i < this.urls.size(); i++) {
+                    new FetchURL(getActivity()).execute(urls.get(i), "driving");
+                }
             }
         }
     }
@@ -268,7 +270,7 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
                 if (locationData != null) {
 
                     LatLng point = new LatLng(locationData.getLatitude(), locationData.getLongitude());
-                    if(marker != null) {
+                    if (marker != null) {
                         marker.remove();
                     }
                     marker = mMap.addMarker(new MarkerOptions().position(point).title("You"));

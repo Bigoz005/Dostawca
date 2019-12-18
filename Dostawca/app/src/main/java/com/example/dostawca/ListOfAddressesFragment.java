@@ -105,9 +105,10 @@ public class ListOfAddressesFragment extends Fragment {
                             routeName += (currentRoute.getPoints().get(i).getName() + ", ");
 
                         }
-                        routeName = routeName.substring(0, routeName.length() - 1);
-                        routeName += "...";
-
+                        if(routeName.length()>0) {
+                            routeName = routeName.substring(0, routeName.length() - 1);
+                            routeName += "...";
+                        }
                         currentRoute.setName(routeName);
                         firebaseDAO.saveRouteForCurrentUser(currentRoute);
                         CurrentRouteService.

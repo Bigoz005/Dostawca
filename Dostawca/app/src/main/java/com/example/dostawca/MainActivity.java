@@ -198,11 +198,13 @@ public class MainActivity extends AppCompatActivity
 //        if (mapFragments.currentPolyline != null)
 //            mapFragments.currentPolyline.remove();
 //        mapFragments.routeToCurrentLocalisation();
-        mapFragments.currentPolyline = mapFragments.mMap.addPolyline((PolylineOptions) values[0]);
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(mapFragments.cameraFirstPosition).zoom(10).build();
+        if (mapFragments.route != null) {
+            mapFragments.currentPolyline = mapFragments.mMap.addPolyline((PolylineOptions) values[0]);
+            CameraPosition cameraPosition = new CameraPosition.Builder().target(mapFragments.cameraFirstPosition).zoom(10).build();
 
-        mapFragments.mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            mapFragments.mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 //        mapFragments.onTaskDone(values);
+        }
     }
 
 }
