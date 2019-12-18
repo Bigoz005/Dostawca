@@ -49,6 +49,7 @@ import com.gun0912.tedpermission.TedPermission;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class MapFragments extends Fragment implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -87,6 +88,12 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
     public MapFragments(Route route) {
         this.route = route;
     }
+
+//    public void routeToCurrentLocalisation(){
+//        this.places.add(new MarkerOptions().position(new LatLng(marker.getPosition().latitude, marker.getPosition().longitude)).title("Start"));
+//        this.urls.add(places.size(), getUrl(places.get(places.size()-1).getPosition(), places.get(places.size()).getPosition(), "driving"));
+//        new FetchURL(getActivity()).execute(urls.get(urls.size()), "driving");
+//    }
 
     public void setNewRoute(Route route) {
         int i = 0;
@@ -322,7 +329,7 @@ public class MapFragments extends Fragment implements GoogleApiClient.Connection
     public void locationChecker(GoogleApiClient mGoogleApiClient, final Activity activity) {
         final LocationRequest locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(3 * 1000);
+        locationRequest.setInterval(1 * 500);
         locationRequest.setFastestInterval(2 * 1000);
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
                 .addLocationRequest(locationRequest);

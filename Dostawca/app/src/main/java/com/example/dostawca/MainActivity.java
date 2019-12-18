@@ -197,8 +197,10 @@ public class MainActivity extends AppCompatActivity
         MapFragments mapFragments = (MapFragments) getSupportFragmentManager().findFragmentByTag("mapFragments");
 //        if (mapFragments.currentPolyline != null)
 //            mapFragments.currentPolyline.remove();
+//        mapFragments.routeToCurrentLocalisation();
         mapFragments.currentPolyline = mapFragments.mMap.addPolyline((PolylineOptions) values[0]);
         CameraPosition cameraPosition = new CameraPosition.Builder().target(mapFragments.cameraFirstPosition).zoom(10).build();
+
         mapFragments.mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 //        mapFragments.onTaskDone(values);
     }
